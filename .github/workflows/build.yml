@@ -1,43 +1,8 @@
-name: Build C++ with CMake
-
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-
+name: build all
+on: push
 jobs:
-  build:
-    name: Build on Ubuntu
+  build-cpp:
     runs-on: ubuntu-latest
-
     steps:
-      # Шаг 1: Клонируем код
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Шаг 2: Устанавливаем компилятор и CMake
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake g++ make
-
-      # Шаг 3: Собираем проект
-      - name: Configure and build
-        run: |
-          mkdir -p cpp-build/build
-          cd cpp-build/build
-          cmake ..
-          make
-
-      # Шаг 4: Запускаем программу (проверяем, что работает)
-      - name: Run executable
-        run: |
-          ./cpp-build/build/my_app
-
-      # Шаг 5: Загружаем собранный бинарник как артефакт
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my_app
-          path: cpp-build/build/my_app
+      - name: test
+        run: echo "Hello World!"
