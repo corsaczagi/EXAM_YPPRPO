@@ -25,19 +25,19 @@ jobs:
       # Шаг 3: Собираем проект
       - name: Configure and build
         run: |
-          mkdir -p build
-          cd build
+          mkdir -p cpp-build/build
+          cd cpp-build/build
           cmake ..
           make
 
       # Шаг 4: Запускаем программу (проверяем, что работает)
       - name: Run executable
         run: |
-          ./build/my_app
+          ./cpp-build/build/my_app
 
       # Шаг 5: Загружаем собранный бинарник как артефакт
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: my_app
-          path: build/my_app
+          path: cpp-build/build/my_app
