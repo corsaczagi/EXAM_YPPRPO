@@ -1,0 +1,45 @@
+name: Python CI with PyBuilder
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.9', '3.10', '3.11' ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install PyBuilder
+        run: |
+          pip install pybuilder
+          pyb --version
+
+      - name: Run PyBuilder
+        run: pyb
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-python-${{ matrix.python-version }}
+          path: target/reports/
+
+      - name: Upload distribution package
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-${{ matrix.python-version }}
+          path: target/dist/
